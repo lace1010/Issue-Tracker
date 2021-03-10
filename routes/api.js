@@ -55,7 +55,7 @@ module.exports = (app) => {
 
       // Save new issue to database
       newIssue.save((error, savedIssue) => {
-        if (error) return console.log(error);
+        if (error) return res.json({ error: "required field(s) missing" });
         if (!error && savedIssue) {
           // Do not need this. can just log savedIssue to see that it saves to database
           return res.json(savedIssue);

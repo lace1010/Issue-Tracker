@@ -99,7 +99,7 @@ module.exports = (app) => {
         req.body.assigned_to == "" &&
         req.body.status_text == ""
       ) {
-        res.json({ error: "no update field(s) sent", _id: id });
+        res.json({ error: "no update field sent", _id: id });
       } else {
         Issue.findByIdAndUpdate(
           id,

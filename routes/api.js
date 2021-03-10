@@ -85,7 +85,8 @@ module.exports = (app) => {
         req.body.issue_text == "" &&
         req.body.created_by == "" &&
         req.body.assigned_to == "" &&
-        req.body.status_text == ""
+        req.body.status_text == "" &&
+        req.boy.open == ""
       ) {
         res.json({ error: "no update field(s) sent", _id: id });
       } else {

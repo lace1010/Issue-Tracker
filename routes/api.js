@@ -106,6 +106,7 @@ module.exports = (app) => {
           { new: true }, // {new, true} returns the updated version and not the original. (Default is false)
           (error, issueToUpdate) => {
             if (error) return res.json({ error: "could not update", _id: id });
+            console.log(issueToUpdate);
             res.json({ result: "successfully updated", _id: id });
           }
         );
@@ -120,6 +121,7 @@ module.exports = (app) => {
       } else {
         Issue.findByIdAndDelete(id, (error, deletedIssue) => {
           if (error) return res.json({ error: "could not delete", _id: id });
+          console.log(deletedIssue);
           res.json({ result: "successfully deleted", _id: id });
         });
       }

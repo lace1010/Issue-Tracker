@@ -32,7 +32,6 @@ module.exports = (app) => {
 
   app
     .route("/api/issues/:project")
-
     .get(async (req, res) => {
       let projectName = req.params.project;
 
@@ -78,9 +77,34 @@ module.exports = (app) => {
 
     .put((req, res) => {
       let projectName = req.params.project;
+      let id = req.body._id;
+      if (!req.body._id) {
+        res.json({ error: "missing _id" });
+      } else if (
+        req.body.issue_title == "" &&
+        req.body.issue_text == "" &&
+        req.body.created_by == "" &&
+        req.body.assigned_to == "" &&
+        req.body.status_text == ""
+      ) {
+        res.json({ error: "no update field(s) sent", _id: id });
+      } else {
+        Issue.findByIdAndUpdate(
+          id,
+          { $set: { updated_on: new Date().toUTCString() } },
+          { new: true }, // {new, true} returns the updated version and not the original. (Default is false)
+          (error, issueToUpdate) => {
+            if (error) return res.json({ error: "could not update", _id: id });
+            console.log(issueToUpdate, "update this issue");
+            res.json({ result: "successfully updated", _id: id });
+          }
+        );
+      }
     })
 
     .delete((req, res) => {
       let projectName = req.params.project;
     });
 };
+
+// 604834595a0acd3251168f14

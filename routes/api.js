@@ -39,8 +39,7 @@ module.exports = (app) => {
 
     .post((req, res) => {
       let projectName = req.params.project;
-      let projectBody = req.body;
-      console.log(projectBody);
+
       // Create new issue model to be stored in database
       let newIssue = new Issue({
         issue_title: req.body.issue_title,
@@ -58,7 +57,8 @@ module.exports = (app) => {
       newIssue.save((error, savedIssue) => {
         if (error) return console.log(error);
         if (!error && savedIssue) {
-          console.log(savedIssue);
+          // Do not need this. can just log savedIssue to see that it saves to database
+          return res.json(savedIssue);
         }
       });
     })

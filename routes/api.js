@@ -32,7 +32,7 @@ module.exports = (app) => {
 
   app
     .route("/api/issues/:project")
-    .get(async (req, res) => {
+    .get((req, res) => {
       let projectName = req.params.project;
 
       // To add a filter for querys to add on all fields, assign an object with query objects
@@ -76,23 +76,34 @@ module.exports = (app) => {
     })
 
     .put((req, res) => {
-      let projectName = req.params.project;
+      // handle the error test
       let id = req.body._id;
-      if (!req.body._id) {
+
+      // Everytime object updates we should change the updated_on date
+      let updatedObject = { updated_on: new Date().toUTCString() };
+
+      // Object.keys grabs every key in an object. We then loop through to see if any do not equal "".
+      Object.keys(req.body).forEach((key) => {
+        //If an update field was entered we add it to updatedObject to pass into findByIdAndUpdate
+        if (req.body[key] !== "") {
+          updatedObject[key] = req.body[key];
+        }
+      });
+
+      if (!id) {
         res.json({ error: "missing _id" });
       } else if (
         req.body.issue_title == "" &&
         req.body.issue_text == "" &&
         req.body.created_by == "" &&
         req.body.assigned_to == "" &&
-        req.body.status_text == "" &&
-        req.boy.open == ""
+        req.body.status_text == ""
       ) {
         res.json({ error: "no update field(s) sent", _id: id });
       } else {
         Issue.findByIdAndUpdate(
           id,
-          { $set: { updated_on: new Date().toUTCString() } },
+          { $set: updatedObject }, // Update the issue.
           { new: true }, // {new, true} returns the updated version and not the original. (Default is false)
           (error, issueToUpdate) => {
             if (error) return res.json({ error: "could not update", _id: id });

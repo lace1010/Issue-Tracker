@@ -33,8 +33,20 @@ module.exports = (app) => {
   app
     .route("/api/issues/:project")
 
-    .get((req, res) => {
+    .get(async (req, res) => {
       let projectName = req.params.project;
+
+      // To add a filter for querys to add on all fields, assign an object with query objects
+      let filteredObject = Object.assign(req.query);
+      // Add project_name so we are filtering through the correct project as well as the querys that are added on url.
+      filteredObject["project_name"] = projectName;
+
+      // Find all objects in database with correct project name and addtional querys. Then display them as an array
+      Issue.find(filteredObject, (error, docs) => {
+        if (error) return console.log(error);
+        console.log("calling else");
+        res.json([...docs]);
+      });
     })
 
     .post((req, res) => {
@@ -55,9 +67,10 @@ module.exports = (app) => {
 
       // Save new issue to database
       newIssue.save((error, savedIssue) => {
+        // Don't respond with console.log(error) because fcc test wants this error message in res.json()
         if (error) return res.json({ error: "required field(s) missing" });
         if (!error && savedIssue) {
-          // Do not need this. can just log savedIssue to see that it saves to database
+          // Do not need this. can just log savedIssue to see that it saves to database. Use res.json() to pass tests
           return res.json(savedIssue);
         }
       });

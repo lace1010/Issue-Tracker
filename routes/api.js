@@ -76,7 +76,6 @@ module.exports = (app) => {
     })
 
     .put((req, res) => {
-      // handle the error test
       let id = req.body._id;
 
       // Everytime object updates we should change the updated_on date
@@ -99,7 +98,7 @@ module.exports = (app) => {
         req.body.assigned_to == "" &&
         req.body.status_text == ""
       ) {
-        res.json({ error: "no update field sent", _id: id });
+        res.json({ error: "no update field(s) sent", _id: id });
       } else {
         Issue.findByIdAndUpdate(
           id,
@@ -107,7 +106,6 @@ module.exports = (app) => {
           { new: true }, // {new, true} returns the updated version and not the original. (Default is false)
           (error, issueToUpdate) => {
             if (error) return res.json({ error: "could not update", _id: id });
-            console.log(issueToUpdate, "update this issue");
             res.json({ result: "successfully updated", _id: id });
           }
         );
@@ -116,6 +114,15 @@ module.exports = (app) => {
 
     .delete((req, res) => {
       let projectName = req.params.project;
+      let id = req.body._id;
+      if (!id) {
+        res.json({ error: "missing _id" });
+      } else {
+        Issue.findByIdAndDelete(id, (error, deletedIssue) => {
+          if (error) return res.json({ error: "could not delete", _id: id });
+          res.json({ result: "successfully deleted", _id: id });
+        });
+      }
     });
 };
 

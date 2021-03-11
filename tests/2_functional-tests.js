@@ -20,7 +20,6 @@ suite("Functional Tests", () => {
             created_by: "Me",
             assigned_to: "FCC",
             status_text: "In QA",
-            _id: "",
           })
 
           .end((err, res) => {

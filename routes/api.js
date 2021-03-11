@@ -89,11 +89,11 @@ module.exports = (app) => {
         }
       });
       if (!id) {
-        res.json({ error: "missing _id" });
+        return res.json({ error: "missing _id" });
       }
       // Because req.bodyincludes id we need to do <= as id and updated_on will always be in updatedObject
       else if (Object.keys(updatedObject).length <= 2) {
-        res.json({ error: "no update field(s) sent", _id: id });
+        return res.json({ error: "no update field(s) sent", _id: id });
       }
       // If correctly inputted by user update the issue
       else {
@@ -118,10 +118,8 @@ module.exports = (app) => {
         Issue.findByIdAndDelete(id, (error, deletedIssue) => {
           if (error) return res.json({ error: "could not delete", _id: id });
           console.log(deletedIssue);
-          res.json({ result: "successfully deleted", _id: id });
+          return res.json({ result: "successfully deleted", _id: id });
         });
       }
     });
 };
-
-// 604834595a0acd3251168f14

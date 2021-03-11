@@ -102,9 +102,11 @@ module.exports = (app) => {
           { $set: updatedObject }, // Update the issue.
           { new: true }, // {new, true} returns the updated version and not the original. (Default is false)
           (error, issueToUpdate) => {
-            if (error) return res.json({ error: "could not update", _id: id }); // For wrong _id input
-            console.log(issueToUpdate); // Without this log we do not pass test. Think it has something to do with using the updatedIssue paramter
-            res.json({ result: "successfully updated", _id: id });
+            if (!issueToUpdate) {
+              return res.json({ error: "could not update", _id: id }); // For wrong _id input
+            } else if (!error && issueToUpdate) {
+              res.json({ result: "successfully updated", _id: id });
+            }
           }
         );
       }
@@ -116,9 +118,14 @@ module.exports = (app) => {
         return res.json({ error: "missing _id" });
       } else {
         Issue.findByIdAndDelete(id, (error, deletedIssue) => {
-          if (error) return res.json({ error: "could not delete", _id: id });
-          console.log(deletedIssue);
-          return res.json({ result: "successfully deleted", _id: id });
+          // If deltedIssue is not found then send error message
+          if (!deletedIssue) {
+            return res.json({ error: "could not delete", _id: id });
+          }
+          // else if deletedIssue is found and there is no error delete the issue and display the correct json object
+          else if (!error && deletedIssue) {
+            return res.json({ result: "successfully deleted", _id: id });
+          }
         });
       }
     });

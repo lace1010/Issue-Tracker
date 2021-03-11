@@ -102,9 +102,12 @@ module.exports = (app) => {
           { $set: updatedObject }, // Update the issue.
           { new: true }, // {new, true} returns the updated version and not the original. (Default is false)
           (error, issueToUpdate) => {
+            // If issueToUpdate is not found and updated then send error message
             if (!issueToUpdate) {
-              return res.json({ error: "could not update", _id: id }); // For wrong _id input
-            } else if (!error && issueToUpdate) {
+              return res.json({ error: "could not update", _id: id });
+            }
+            // If issueToUpdate is updated and there is no error then send successful res.json()
+            else if (!error && issueToUpdate) {
               res.json({ result: "successfully updated", _id: id });
             }
           }

@@ -8,11 +8,11 @@ module.exports = (app) => {
   const Schema = mongoose.Schema;
 
   // Use the next four lines to see if you are conneted to mongoose correctly
-  var db = mongoose.connection;
-  db.on("error", console.error.bind(console, "connection error:"));
-  db.once("open", () => {
-    console.log("Connection Successful!");
-  });
+  // var db = mongoose.connection;
+  // db.on("error", console.error.bind(console, "connection error:"));
+  // db.once("open", () => {
+  //   console.log("Connection Successful!");
+  // });
 
   // Set a issueSchema
   const issueSchema = new Schema({
@@ -43,7 +43,7 @@ module.exports = (app) => {
       // Find all objects in database with correct project name and addtional querys. Then display them as an array
       Issue.find(filteredObject, (error, docs) => {
         if (error) return console.log(error);
-        console.log("calling else");
+
         res.json([...docs]);
       });
     })
@@ -88,25 +88,22 @@ module.exports = (app) => {
           updatedObject[key] = req.body[key];
         }
       });
-
       if (!id) {
         res.json({ error: "missing _id" });
-      } else if (
-        req.body.issue_title == "" &&
-        req.body.issue_text == "" &&
-        req.body.created_by == "" &&
-        req.body.assigned_to == "" &&
-        req.body.status_text == ""
-      ) {
+      }
+      // Because req.bodyincludes id we need to do <= as id and updated_on will always be in updatedObject
+      else if (Object.keys(updatedObject).length <= 2) {
         res.json({ error: "no update field(s) sent", _id: id });
-      } else {
+      }
+      // If correctly inputted by user update the issue
+      else {
         Issue.findByIdAndUpdate(
           id,
           { $set: updatedObject }, // Update the issue.
           { new: true }, // {new, true} returns the updated version and not the original. (Default is false)
           (error, issueToUpdate) => {
-            if (error) return res.json({ error: "could not update", _id: id });
-            console.log(issueToUpdate);
+            if (error) return res.json({ error: "could not update", _id: id }); // For wrong _id input
+            console.log(issueToUpdate); // Without this log we do not pass test. Think it has something to do with using the updatedIssue paramter
             res.json({ result: "successfully updated", _id: id });
           }
         );
@@ -114,7 +111,6 @@ module.exports = (app) => {
     })
 
     .delete((req, res) => {
-      let projectName = req.params.project;
       let id = req.body._id;
       if (!id) {
         res.json({ error: "missing _id" });

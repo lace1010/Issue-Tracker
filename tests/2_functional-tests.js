@@ -13,7 +13,7 @@ suite("Functional Tests", () => {
       test("Issue with every field", (done) => {
         chai
           .request(server)
-          .post("/api/issues/test")
+          .post("/api/issues/{project}")
           .send({
             issue_title: "Title",
             issue_text: "text",
@@ -40,7 +40,7 @@ suite("Functional Tests", () => {
       test("Issue with only required fields", (done) => {
         chai
           .request(server)
-          .post("/api/issues/test")
+          .post("/api/issues/{project}")
           .send({
             issue_title: "Title",
             issue_text: "text",
@@ -58,7 +58,7 @@ suite("Functional Tests", () => {
       test("Issue with missing required fields", (done) => {
         chai
           .request(server)
-          .post("/api/issues/test")
+          .post("/api/issues/{project}")
           .send({ issue_title: "Title", issue_text: "text" })
           .end((err, res) => {
             assert.equal(res.body.error, "required field(s) missing");
@@ -71,7 +71,7 @@ suite("Functional Tests", () => {
       test("issues with no filter", (done) => {
         chai
           .request(server)
-          .get("/api/issues/test")
+          .get("/api/issues/{project}")
           .query({})
           .end((err, res) => {
             assert.equal(res.status, 200);
@@ -94,7 +94,7 @@ suite("Functional Tests", () => {
       test("View issues on a project with one filter", (done) => {
         chai
           .request(server)
-          .get("/api/issues/test")
+          .get("/api/issues/{project}")
           .query({ created_by: "Me" })
           .end((err, res) => {
             assert.equal(res.status, 200);
@@ -109,7 +109,7 @@ suite("Functional Tests", () => {
       test("View issues on a project with multiple filters", (done) => {
         chai
           .request(server)
-          .get("/api/issues/test")
+          .get("/api/issues/{project}")
           .query({ created_by: "Me", issue_title: "Title" })
           .end((err, res) => {
             assert.equal(res.status, 200);
@@ -127,7 +127,7 @@ suite("Functional Tests", () => {
       test("Update one field on an issue", (done) => {
         chai
           .request(server)
-          .put("/api/issues/test")
+          .put("/api/issues/{project}")
           .send({ _id: id1, issue_text: "bish" }) // Must send id we set in first test that issue goes to all of these tests
           .end((err, res) => {
             assert.equal(res.status, 200);
@@ -138,7 +138,7 @@ suite("Functional Tests", () => {
       test("Update multiple fields on an issue", (done) => {
         chai
           .request(server)
-          .put("/api/issues/test")
+          .put("/api/issues/{project}")
           .send({ _id: id1, issue_text: "bish", created_by: "Hunter" })
           .end((err, res) => {
             assert.equal(res.status, 200);
@@ -149,7 +149,7 @@ suite("Functional Tests", () => {
       test("Update an issue with missing _id", (done) => {
         chai
           .request(server)
-          .put("/api/issues/test")
+          .put("/api/issues/{project}")
           .send({ issue_text: "bish" })
           .end((err, res) => {
             assert.equal(res.body.error, "missing _id");
@@ -159,7 +159,7 @@ suite("Functional Tests", () => {
       test("Update an issue with no fields to update", (done) => {
         chai
           .request(server)
-          .put("/api/issues/test")
+          .put("/api/issues/{project}")
           .send({ _id: id1 })
           .end((err, res) => {
             assert.equal(res.body.error, "no update field(s) sent");
@@ -170,7 +170,7 @@ suite("Functional Tests", () => {
       test("Update an issue with an invalid _id", (done) => {
         chai
           .request(server)
-          .put("/api/issues/test")
+          .put("/api/issues/{project}")
           .send({ _id: "invalidId", issue_text: "sample" })
           .end((err, res) => {
             assert.equal(res.body.error, "could not update");
@@ -184,7 +184,7 @@ suite("Functional Tests", () => {
       test("Delete an issue", (done) => {
         chai
           .request(server)
-          .delete("/api/issues/test")
+          .delete("/api/issues/{project}")
           .send({ _id: id1 })
           .end((err, res) => {
             assert.equal(res.status, 200);
@@ -196,7 +196,7 @@ suite("Functional Tests", () => {
       test("Delete an issue with an invalid _id", (done) => {
         chai
           .request(server)
-          .delete("/api/issues/test")
+          .delete("/api/issues/{project}")
           .send({ _id: "invalidId" })
           .end((err, res) => {
             assert.equal(res.body.error, "could not delete");
@@ -207,7 +207,7 @@ suite("Functional Tests", () => {
       test("Delete an issue with missing _id", (done) => {
         chai
           .request(server)
-          .delete("/api/issues/test")
+          .delete("/api/issues/{project}")
           .send({})
           .end((err, res) => {
             assert.equal(res.body.error, "missing _id");

@@ -113,7 +113,7 @@ module.exports = (app) => {
     .delete((req, res) => {
       let id = req.body._id;
       if (!id) {
-        res.json({ error: "missing _id" });
+        return res.json({ error: "missing _id" });
       } else {
         Issue.findByIdAndDelete(id, (error, deletedIssue) => {
           if (error) return res.json({ error: "could not delete", _id: id });

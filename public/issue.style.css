@@ -1,0 +1,229 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  padding: 10px;
+  background-color: rgb(255, 255, 255);
+}
+
+#projectTitle {
+  margin: 10px 10px 20px 10px;
+  text-align: center;
+}
+
+#projectName {
+  color: blue;
+}
+
+#note {
+  margin-left: 10%;
+}
+
+button {
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button:hover {
+  filter: brightness(85%);
+  cursor: pointer;
+}
+
+#buttonsContainer {
+  margin-top: 30px;
+  margin-left: 10%;
+}
+
+#homeButton {
+  background-color: blue;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+#submitNewButton {
+  background-color: rgb(41, 115, 226);
+}
+
+#updateButton {
+  background-color: rgb(216, 169, 67);
+}
+
+.submitIssue {
+  background-color: rgb(41, 115, 226);
+  color: white;
+}
+
+input,
+textarea {
+  width: 100%;
+  margin: 10px 0 10px 0;
+  font-size: 20px;
+  border: 1px solid lightgrey;
+  border-radius: 3px;
+  padding: 4px 0 4px 4px;
+}
+
+.inputLabel {
+  font-size: 20px;
+}
+
+textarea {
+  height: 100px;
+}
+
+/* Need this to start with hidden and then add and remove classes on button click . Got fancy with animations*/
+.startSubmitNew {
+  visibility: hidden;
+  max-height: 0;
+}
+.submitNew {
+  max-height: 0;
+  transition: max-height 0.5s linear;
+  transform: scaleY(1);
+  animation: 0.5s slowlyHide;
+  animation-fill-mode: forwards;
+  width: 80%;
+  margin-top: 20px;
+  margin-right: 10%;
+  margin-left: 10%;
+}
+
+@keyframes slowlyHide {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.submitNewIssueContainer {
+  width: 80%;
+  margin-top: 20px;
+  margin-right: 10%;
+  margin-left: 10%;
+  visibility: visible;
+  max-height: 800px;
+  transition: max-height 0.5s linear;
+  transform: scaleY(1);
+  animation: 0.5s slowlyShow;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slowlyShow {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+/* Need this to start with hidden and then add and remove classes on button click. Got fancy with animations */
+.startUpdate {
+  visibility: hidden;
+  max-height: 0;
+}
+.update {
+  max-height: 0;
+  transition: max-height 0.5s linear;
+  transform: scaleY(1);
+  animation: 0.5s slowlyHide;
+  animation-fill-mode: forwards;
+  width: 80%;
+  margin-top: 20px;
+  margin-right: 10%;
+  margin-left: 10%;
+}
+
+@keyframes slowlyHide {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.updateIssueContainer {
+  width: 80%;
+  margin-top: 20px;
+  margin-right: 10%;
+  margin-left: 10%;
+  visibility: visible;
+  max-height: 800px;
+  transition: max-height 0.5s linear;
+  transform: scaleY(1);
+  animation: 0.5s slowlyShow;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slowlyShow {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#issueDisplayContainer {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+/* Change this with media query to adjust to page size*/
+.issue {
+  background-color: white;
+  margin: 20px 0px 20px;
+  padding: 10px 15px 5px 15px;
+  font-size: 20px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 20px 1px lightgray;
+}
+
+.issueHeader {
+  color: blue;
+  font-size: 30px;
+}
+
+/* link that closes issue*/
+.closeIssue {
+  color: rgb(192, 235, 192);
+  text-decoration: none;
+  font-size: 20px;
+  display: inline-block;
+  margin-top: 10px;
+  visibility: visible;
+}
+
+.deleteIssue {
+  color: red;
+  text-decoration: none;
+  font-size: 20px;
+  margin-top: 10px;
+  float: right;
+}
+
+a:hover {
+  color: rgb(40, 25, 180);
+  filter: brightness(85%);
+  text-decoration: underline;
+}
+/*If an issue gets closed the style of it goes here*/
+.closed {
+  background-color: rgb(192, 235, 192);
+  padding-bottom: 20px;
+}
+
+.id {
+  font-size: 16px;
+  margin: 5px;
+}

@@ -58,8 +58,8 @@ module.exports = (app) => {
         created_by: req.body.created_by,
         assigned_to: req.body.assigned_to || "",
         status_text: req.body.status_text || "",
-        created_on: new Date().toUTCString(),
-        updated_on: new Date().toUTCString(),
+        created_on: new Date(),
+        updated_on: new Date(),
         open: true,
         project_name: projectName,
       });
@@ -79,7 +79,7 @@ module.exports = (app) => {
       let id = req.body._id;
 
       // Everytime object updates we should change the updated_on date
-      let updatedObject = { updated_on: new Date().toUTCString() };
+      let updatedObject = { updated_on: new Date() };
 
       // Object.keys grabs every key in an object. We then loop through to see if any do not equal "".
       Object.keys(req.body).forEach((key) => {

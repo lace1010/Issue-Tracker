@@ -6,30 +6,58 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/public/style.css">
+    <link rel="stylesheet" href="/public/issue.style.css">
   </head>
   <body>
     <header>
-      <h1 id='projectTitle'></h1>
+      <h1 id='projectTitle'>All issues for: <span id="projectName"></span></h1> 
+      <i id="note">** To view other project issues- enter your project in the address bar</i>
     </header>
-    <center>
-      <div id='submitNewIssue'>
-        <br>
-        <h3>Submit a new issue:</h3>
+    <div id="buttonsContainer">
+      <a id="homeButton" href="https://codepen.io/lace1010/full/dyXXYJE" target="_blank">Home</a>
+      <button id="submitNewButton">Submit New Issue</button>
+      <button id="updateButton">Update Issue</button>
+    </div>
+    <div id="NewAndUpdateContainer">
+      <div class='startSubmitNew'>
         <form id="newIssue" method="post" action="/api/">
-          <input type="text" name="issue_title" placeholder="*Title" style="width: 320px; margin-bottom: 3px;" required='true'><br>
-          <textarea type="text" name="issue_text" placeholder="*Text" style="width: 320px; height: 100px;" required='true'></textarea><br>
-          <input type="text" name="created_by" placeholder="*Created by" style="width: 100px" required='true'>
-          <input type="text" name="assigned_to" placeholder="(opt)Assigned to" style="width: 100px">
-          <input type="text" name="status_text" placeholder="(opt)Status text" style="width: 100px"><br>
-          <button type="submit">Submit Issue</button>
+          <span class="inputLabel">Issue Title:</span>
+          <input type="text" name="issue_title" placeholder="*Title" required='true'><br>
+          <span class="inputLabel">Issue Text:</span>
+          <textarea type="text" name="issue_text" placeholder="*Text" required='true'></textarea><br>
+          <span class="inputLabel">Created by:</span>
+          <input type="text" name="created_by" placeholder="*Created by" required='true'><br>
+          <span class="inputLabel">Assigned to:</span>
+          <input type="text" name="assigned_to" placeholder="(opt)Assigned to"><br>
+          <span class="inputLabel">Status text:</span>
+          <input type="text" name="status_text" placeholder="(opt)Status text"><br>
+        
+            <button class="submitIssue" type="submit">Submit Issue</button>
         </form>
       </div>
-      
+
+      <div class="startUpdate">
+        <form id="testForm2" class="border">
+          <span class="inputLabel">Issue Id:</span>
+          <input type="text" name="_id" placeholder="*_id" required='true'><br>
+          <span class="inputLabel">Issue Title:</span>
+          <input type="text" name="issue_title" placeholder="(opt)Title"><br>
+          <span class="inputLabel">Issue Text:</span>
+          <textarea type="text" name="issue_text" placeholder="(opt)Text"></textarea><br>
+          <span class="inputLabel">Created by:</span>
+          <input type="text" name="created_by" placeholder="(opt)Created by"><br>
+          <span class="inputLabel">Assigned to:</span>
+          <input type="text" name="assigned_to" placeholder="(opt)Assigned to"><br>
+          <span class="inputLabel">Status text:</span>
+          <input type="text" name="status_text" placeholder="(opt)Status text"><br>
+          <button class="submitIssue" type="submit">Update Issue</button>
+        </form>
+      </div>
+    </div>
+    <div id= issueDisplayContainer>
+      <hr style="width: 100%; margin-top: 30px;">
       <div id='issueDisplay'></div>
-      
-      <hr style='margin: 50px; margin-top: 200px'>
-    </center>
+    </div>
     
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"
             integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
@@ -38,34 +66,59 @@
       $(function() {
         let currentProject = window.location.pathname.replace(/\//g, "");;
         let url = "/api/issues/"+currentProject;
-        $('#projectTitle').text('All issues for: '+currentProject)
+        let submitNew = false;
+        let update = false;
+        $('#projectName').text(currentProject)
         $.ajax({
           type: "GET",
           url: url,
           success: function(data)
           {
             let issues= [];
+            // Loop through each element in the database with this projectName and display it accordingly
             data.forEach(function(ele) {
               console.log(ele);
               let openstatus;
-              (ele.open) ? openstatus = 'open' : openstatus = 'closed';
-              let single = [
+              let single;
+              if (ele.open) {
+                // If issue is open display issue with certian style default setup below
+                openstatus = 'open'
+                single = [
                 '<div class="issue '+openstatus+'">',
-                '<p class="id">id: '+ele._id+'</p>',
-                '<h3>'+ele.issue_title+' -  ('+openstatus+')</h3>',
+                '<h3 class="issueHeader">'+ele.issue_title+' -  ('+openstatus+')</h3>',
+                '<p class="id"><b>Issue id</b>: '+ele._id+'</p>',
                 '<br>',
                 '<p>'+ele.issue_text+'</p>',
                 '<p>'+ele.status_text+'</p>',
                 '<br>',
                 '<p class="id"><b>Created by:</b> '+ele.created_by+'  <b>Assigned to:</b> '+ele.assigned_to,
                 '<p class="id"><b>Created on:</b> '+ele.created_on+'  <b>Last updated:</b> '+ele.updated_on,
-                '<br><a href="#" class="closeIssue" id="'+ele._id+'">close?</a> <a href="#" class="deleteIssue" id="'+ele._id+'">delete?</a>',
+                '<br><a href="#" class="closeIssue" id="'+ele._id+'">Close</a> <a href="#" class="deleteIssue" id="'+ele._id+'">Delete</a>',
                 '</div>'
-                
               ];
+              } else {
+                // If issue is closed display issue with certain style
+                openstatus = 'closed';
+                single = [
+                '<div class="issue '+openstatus+'">',
+                '<h3 class="issueHeader">'+ele.issue_title+' -  ('+openstatus+')</h3>',
+                '<p class="id"><b>Issue id</b>: '+ele._id+'</p>',
+                '<br>',
+                '<p>'+ele.issue_text+'</p>',
+                '<p>'+ele.status_text+'</p>',
+                '<br>',
+                '<p class="id"><b>Created by:</b> '+ele.created_by+'  <b>Assigned to:</b> '+ele.assigned_to,
+                '<p class="id"><b>Created on:</b> '+ele.created_on+'  <b>Last updated:</b> '+ele.updated_on,
+                  // Get rid of first link's name so close button disappears because issue is already closed
+                '<br><a href="#" class="closeIssue" id="'+ele._id+'"></a> <a href="#" class="deleteIssue" id="'+ele._id+'">Delete</a>',
+                '</div>'
+              ];
+              } 
               issues.push(single.join(''));
+              
             });
             $('#issueDisplay').html(issues.join(''));
+            
           }
         });
         
@@ -86,7 +139,8 @@
             type: "PUT",
             url: url,
             data: {_id: $(this).attr('id'), open: false},
-            success: function(data) { alert(data); window.location.reload(true); }
+            success: function() { 
+              alert("The issue is now closed"); window.location.reload(true);}
           });
           e.preventDefault();
         });
@@ -96,11 +150,63 @@
             type: "DELETE",
             url: url,
             data: {_id: $(this).attr('id')},
-            success: function(data) { alert(data); window.location.reload(true); }
+            success: function() { 
+              alert("The issue has been deleted"); window.location.reload(true); }
           });
           e.preventDefault();
         });
+        $('#testForm2').submit(function(e) {
+          $.ajax({
+            url: '/api/issues/apitest',
+            type: 'put',
+            data: $('#testForm2').serialize(),
+            success: function(data) {
+              $('#jsonResult').text(JSON.stringify(data));
+              { window.location.reload(true); } // Reload screen after update
+            }
+          });
+          e.preventDefault();
+        });
+       
+        $("#submitNewButton").click(function() {
+          if (!submitNew) {
+            $(".startSubmitNew").removeClass("startSubmitNew").addClass("submitNewIssueContainer");
+            $(".submitNew").removeClass("submitNew").addClass("submitNewIssueContainer");
+            
+            // Remove submitIssue if it is displaying. This way only updateIssue is showing
+            $(".updateIssueContainer").removeClass("updateIssueContainer").addClass("update");
+            submitNew = true;
+            update = false;
+          } else {
+              $(".submitNewIssueContainer").removeClass("submitNewIssueContainer").addClass("submitNew");
+              $(".updateIssueContainer").removeClass("updateIssueContainer").addClass("update");
+              submitNew = false;
+          }
+        })
+
+        $("#updateButton").click(() => {
+          if (!update) {
+            // If just started remove start class nd add updateIssue class that shows update form with animation. 
+            // This way the form doesn't show via animation when first reloads
+            $(".startUpdate").removeClass("startUpdate").addClass("updateIssueContainer");
+            // After first time we do same but call on update class and not startUpdate
+            $(".update").removeClass("update").addClass("updateIssueContainer");
+
+            // Remove submitIssue if it is displaying. This way only updateIssue is showing
+            $(".submitNewIssueContainer").removeClass("submitNewIssueContainer").addClass("submitNew");
+            update= true;
+            submitNew= false;
+          } else {
+            // remove updateIssue class and add class that hides the updated issue via animation
+              $(".updateIssueContainer").removeClass("updateIssueContainer").addClass("update");
+               $(".submitNewIssueContainer").removeClass("submitNewIssueContainer").addClass("submitNew");
+              update = false;
+          }
+        })
       });
+
+      // visibility: hidden; max-height: 0;
    </script>
   </body>
 </html>
+

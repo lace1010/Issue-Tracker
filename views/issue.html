@@ -14,7 +14,7 @@
       <i id="note">** To view other project issues- enter your project in the address bar</i>
     </header>
     <div id="buttonsContainer">
-      <a id="homeButton" href="https://codepen.io/lace1010/full/dyXXYJE" target="_blank">Home</a>
+      <a id="homeButton" href="https://issue-tracker-fcc-project.herokuapp.com">Home</a>
       <button id="submitNewButton">Submit New Issue</button>
       <button id="updateButton">Update Issue</button>
     </div>
@@ -31,8 +31,7 @@
           <input type="text" name="assigned_to" placeholder="(opt)Assigned to"><br>
           <span class="inputLabel">Status text:</span>
           <input type="text" name="status_text" placeholder="(opt)Status text"><br>
-        
-            <button class="submitIssue" type="submit">Submit Issue</button>
+          <button class="submitIssue" type="submit">Submit Issue</button>
         </form>
       </div>
 
@@ -55,9 +54,13 @@
       </div>
     </div>
     <div id= issueDisplayContainer>
-      <hr style="width: 100%; margin-top: 30px;">
+      <hr style="width: 100%; margin-top: 20px;">
       <div id='issueDisplay'></div>
     </div>
+    
+    <footer>
+      Designed and Coded by: <a id="footerLink" href="https://www.linkedin.com/in/hunter-lacefield-871995115/">Hunter Lacefield</a>
+    </footer>
     
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"
             integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
@@ -76,8 +79,8 @@
           {
             let issues= [];
             // Loop through each element in the database with this projectName and display it accordingly
-            data.forEach(function(ele) {
-              console.log(ele);
+            // Use reverse to display suggestions as most recent first
+            data.reverse().forEach(function(ele) {
               let openstatus;
               let single;
               if (ele.open) {
@@ -205,7 +208,6 @@
         })
       });
 
-      // visibility: hidden; max-height: 0;
    </script>
   </body>
 </html>

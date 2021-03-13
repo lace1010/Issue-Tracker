@@ -10,47 +10,93 @@
   </head>
   <body>
     <header>
-      <h1>
-        Issue Tracker
+      <h1 style="text-align: center;">
+        Issue Tracker Home
       </h1>
     </header>
-    <!-- 
-      <code>/api/issues/{project}</code><br>
-      <code>/api/issues/{project}?open=true&amp;assigned_to=Joe</code><br>
-      Go to <a href='/api/issues/apitest/'><code>/api/issues/apitest/</code></a>  project
-    -->
 
-  
-    <div id='testui' style='margin-left: 50px;'>
-      <h2 style="text-align: left">API Tests</h2>
-      <h3>Submit issue on <i>apitest</i></h3>
-      <form id="testForm" class="border">
-        <input type="text" name="issue_title" placeholder="*Title" style="width: 100px" required='true'><br>
-        <textarea type="text" name="issue_text" placeholder="*Text" style="width: 100px" required='true'></textarea><br>
-        <input type="text" name="created_by" placeholder="*Created by" style="width: 100px" required='true'><br>
-        <input type="text" name="assigned_to" placeholder="(opt)Assigned to" style="width: 100px"><br>
-        <input type="text" name="status_text" placeholder="(opt)Status text" style="width: 100px"><br>
-        <button type="submit">Submit Issue</button>
-      </form><br>
-      <h3>Update issue on <i>apitest</i> (Change any or all to update issue on the _id supplied)</h3>
-      <form id="testForm2" class="border">
-        <input type="text" name="_id" placeholder="*_id" style="width: 100px" required='true'><br>
-        <input type="text" name="issue_title" placeholder="(opt)Title" style="width: 100px"><br>
-        <textarea type="text" name="issue_text" placeholder="(opt)Text" style="width: 100px"></textarea><br>
-        <input type="text" name="created_by" placeholder="(opt)Created by" style="width: 100px"><br>
-        <input type="text" name="assigned_to" placeholder="(opt)Assigned to" style="width: 100px"><br>
-        <input type="text" name="status_text" placeholder="(opt)Status text" style="width: 100px"><br>
-        <label><input type="checkbox" name="open" value="false"> Check to close issue</label><br>
-        <button type="submit">Submit Issue</button>
-      </form><br>
-      <h3>Delete issue on <i>apitest</i></h3>
-      <form id="testForm3" class="border">
-        <input type="text" name="_id" placeholder="_id" style="width: 100px" required='true'><br>
-        <button type="submit">Delete Issue</button>
-      </form>
-      <code id='jsonResult'></code>
+    <div id="buttonContainer" class="containers">
+      <button id="submitButton" class="headerButtons selectedButton">Submit Issue</button>
+      <button id="updateButton" class="headerButtons nonSelectedButton">Update Issue</button>
+      <button id="deleteButton" class="headerButtons nonSelectedButton">Delete Issue</button>
+      <hr style="width: 100%">
     </div>
-    <hr style='margin: 50px; margin-top: 200px'>
+
+    <div id="submitContainer" class="containers">
+      <h2 style="text-align: left">API Tests:</h2>
+      <p class="submitIssueNotes">**Any issue submitted here directly will be enlisted in the <span class="submitProjectName">apitest</span> project.</p>
+      <p class="submitIssueNotes">*** If you want to submit issues for other project, type your project in address bar, then submit your issues.</p>
+      <p class="submitIssueNotes">Example: https://issue-tracker-fcc-project.herokuapp.com/<span style="color:blue">your_project_name_here</span></p>
+      <h3 id="submitHeader">Submit issue on: <span class="submitProjectName">apitest</span></h3>
+      <form id="testForm" class="border">
+        <span class="inputLabel">Issue Title:</span>
+        <input type="text" name="issue_title" placeholder="*Title" required='true'><br>
+        <span class="inputLabel">Issue Text:</span>
+        <textarea type="text" name="issue_text" placeholder="*Text" required='true'></textarea><br>
+        <span class="inputLabel">Created by:</span>
+        <input type="text" name="created_by" placeholder="*Created by" required='true'><br>
+        <span class="inputLabel">Assigned to:</span>
+        <input type="text" name="assigned_to" placeholder="(opt)Assigned to"><br>
+        <span class="inputLabel">Status text:</span>
+        <input type="text" name="status_text" placeholder="(opt)Status text"><br>
+        <button id="submitIssue" class="formButtons" type="submit">Submit Issue</button>
+      </form>
+    </div>
+
+    <div id="updateContainer" class="containers hiddenContainer">
+      <h3 id="updateHeader">Update issue on <span class="submitProjectName">apitest:</span></h3>
+      <span id="updateHeaderNote">(Change any or all to update issue on the _id supplied)</span><br>
+      <form id="testForm2" class="border">
+        <span class="inputLabel">Issue ID:</span>
+        <input type="text" name="_id" placeholder="*_id" required=''><br>
+        <span class="inputLabel">Issue Title:</span>
+        <input type="text" name="issue_title" placeholder="(opt)Title"><br>
+        <span class="inputLabel">Issue Text:</span>
+        <textarea type="text" name="issue_text" placeholder="(opt)Text"></textarea><br>
+        <span class="inputLabel">Created by:</span>
+        <input type="text" name="created_by" placeholder="(opt)Created by"><br>
+        <span class="inputLabel">Assigned to:</span>
+        <input type="text" name="assigned_to" placeholder="(opt)Assigned to"><br>
+        <span class="inputLabel">Status text:</span>
+        <input type="text" name="status_text" placeholder="(opt)Status text"><br>
+        <input id="checkbox" type="checkbox" name="open" value="false">
+        <label id="label">Check to close issue</label><br>
+        <button id="updateIssue" class="formButtons"type="submit">Update Issue</button>
+      </form>
+    </div>
+
+    <div id="deleteContainer" class="containers hiddenContainer">
+      <h3 id="deleteHeader">Delete any issue from <span class="submitProjectName">apitest</span> by issue_id</h3>
+      <form id="testForm3" class="border">
+        <span class="inputLabel">Delete Issue by ID:</span>
+        <input type="text" name="_id" placeholder="_id" required=''><br>
+        <button id="deleteIssue" class="formButtons" type="submit">Delete Issue</button>
+      </form>
+    </div>
+
+    <code id='jsonResult' class="containers"></code>
+
+    <div id="exampleContainer" class="containers">
+      <h3 class="exampleHeader">Example GET usage: </h3>
+      <a class="getLinks" href="/api/issues/{project}" style="margin-top: 10px;">/api/issues/{project}</a><br>
+      <a class="getLinks" href="/api/issues/{project}?open=true&assigned_to=Hunter">/api/issues/{project}?open=true&amp;assigned_to=Hunter</a><br>
+      <h3 class="exampleHeader">Example return: </h3>
+      <code>
+        [{"_id":"6049ffa98a3bd14d3631df75","issue_title":"Tomatoes","issue_text":"Tomatoes are my favourite.","created_by":"Laura",
+         "assigned_to":"Hunter","status_text":"","created_on":"2021-03-11T11:31:53.000Z","updated_on":"2021-03-13T08:25:31.075Z",
+         "open":true,"project_name":"{project}","__v":0}, 
+         ... 
+         ]
+      </code>
+      <p id="exampleLink"> 
+          Example project link: <a id="lastLink" href='/apitest'>/apitest</a> 
+      </p>
+    </div>
+
+    <footer>
+      Designed and Coded by: <a id="footerLink" href="https://www.linkedin.com/in/hunter-lacefield-871995115/">Hunter Lacefield</a>
+    </footer>
+    
     <!-- Your web-app is https, so your scripts need to be too -->
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"
             integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
@@ -90,6 +136,40 @@
           });
           e.preventDefault();
         });
+
+        $('#submitButton').click(() => {
+          $("#submitContainer").removeClass("hiddenContainer");
+          $("#updateContainer").addClass("hiddenContainer");
+          $("#deleteContainer").addClass("hiddenContainer");
+
+          // Changing button style now
+          $("#submitButton").removeClass("nonSelectedButton").addClass("selectedButton");
+          $("#updateButton").removeClass("selectedButton").addClass("nonSelectedButton");
+          $("#deleteButton").removeClass("selectedButton").addClass("nonSelectedButton");
+
+        })
+
+        $('#updateButton').click(() => {
+          $("#updateContainer").removeClass("hiddenContainer");
+          $("#submitContainer").addClass("hiddenContainer");
+          $("#deleteContainer").addClass("hiddenContainer");
+
+          // Changing button style now
+          $("#updateButton").removeClass("nonSelectedButton").addClass("selectedButton");
+          $("#submitButton").removeClass("selectedButton").addClass("nonSelectedButton");
+          $("#deleteButton").removeClass("selectedButton").addClass("nonSelectedButton");
+        })
+
+        $('#deleteButton').click(() => {
+          $("#deleteContainer").removeClass("hiddenContainer");
+          $("#updateContainer").addClass("hiddenContainer");
+          $("#submitContainer").addClass("hiddenContainer");
+
+          // Changing button style now
+          $("#deleteButton").removeClass("nonSelectedButton").addClass("selectedButton");
+          $("#submitButton").removeClass("selectedButton").addClass("nonSelectedButton");
+          $("#updateButton").removeClass("selectedButton").addClass("nonSelectedButton");
+        })
       });
    </script>
   </body>

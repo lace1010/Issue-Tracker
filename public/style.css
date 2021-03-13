@@ -32,6 +32,9 @@ textarea {
   font-size: 18px;
 }
 
+.submitProjectName {
+  color: var(--text-color);
+}
 button:hover {
   cursor: pointer;
 }

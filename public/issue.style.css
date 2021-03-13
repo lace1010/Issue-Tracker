@@ -55,7 +55,7 @@ button:hover {
 }
 
 #updateButton {
-  background-color: rgb(216, 169, 67);
+  background-color: rgb(150, 117, 46);
 }
 
 .submitIssue {
@@ -140,7 +140,6 @@ textarea {
   animation: 0.5s slowlyHide;
   animation-fill-mode: forwards;
   width: 80%;
-  margin-top: 20px;
   margin-right: 10%;
   margin-left: 10%;
 }

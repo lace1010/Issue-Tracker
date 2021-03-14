@@ -1,3 +1,8 @@
+:root {
+  --main-color: navy;
+  --text-color: rgb(59, 59, 59);
+}
+
 * {
   margin: 0px;
   padding: 0px;
@@ -7,6 +12,7 @@ body {
   padding: 10px;
   background-color: rgb(255, 255, 255);
   font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-color);
 }
 
 #projectTitle {
@@ -15,7 +21,7 @@ body {
 }
 
 #projectName {
-  color: blue;
+  color: var(--main-color);
 }
 
 #note {
@@ -41,7 +47,7 @@ button:hover {
 }
 
 #homeButton {
-  background-color: blue;
+  background-color: var(--main-color);
   color: white;
   padding: 10px;
   border: none;
@@ -54,7 +60,7 @@ button:hover {
   background-color: rgb(41, 115, 226);
 }
 
-#updateButton {
+.updateButton {
   background-color: rgb(104, 123, 247);
 }
 
@@ -190,7 +196,7 @@ textarea {
 }
 
 .issueHeader {
-  color: blue;
+  color: var(--main-color);
   font-size: 30px;
 }
 
@@ -213,7 +219,6 @@ textarea {
 }
 
 a:hover {
-  color: rgb(40, 25, 180);
   filter: brightness(85%);
   text-decoration: underline;
 }
@@ -230,11 +235,11 @@ a:hover {
 
 footer {
   text-align: center;
+  padding: 10px 0px 40px;
 }
 
 #footerLink {
-  padding: 10px 0px 40px;
-  color: blue;
+  color: var(--main-color);
   text-decoration: none;
 }
 

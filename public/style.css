@@ -130,7 +130,6 @@ button:hover {
 }
 
 #jsonResult {
-  display: block;
   margin-top: 20px;
   color: var(--second-color);
 }

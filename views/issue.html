@@ -83,6 +83,8 @@
             data.reverse().forEach(function(ele) {
               let openstatus;
               let single;
+              let created_on = new Date(ele.created_on);
+              let updated_on = new Date(ele.updated_on);
               if (ele.open) {
                 // If issue is open display issue with certian style default setup below
                 openstatus = 'open'
@@ -95,7 +97,7 @@
                 '<p>'+ele.status_text+'</p>',
                 '<br>',
                 '<p class="id"><b>Created by:</b> '+ele.created_by+'  <b>Assigned to:</b> '+ele.assigned_to,
-                '<p class="id"><b>Created on:</b> '+ele.created_on+'  <b>Last updated:</b> '+ele.updated_on,
+                '<p class="id"><b>Created on:</b> '+created_on.toDateString()+'  <b>Last updated:</b> '+updated_on.toDateString(),
                 '<br><a href="#" class="closeIssue" id="'+ele._id+'">Close</a> <a href="#" class="deleteIssue" id="'+ele._id+'">Delete</a>',
                 '</div>'
               ];
@@ -111,7 +113,7 @@
                 '<p>'+ele.status_text+'</p>',
                 '<br>',
                 '<p class="id"><b>Created by:</b> '+ele.created_by+'  <b>Assigned to:</b> '+ele.assigned_to,
-                '<p class="id"><b>Created on:</b> '+ele.created_on+'  <b>Last updated:</b> '+ele.updated_on,
+                '<p class="id"><b>Created on:</b> '+created_on.toDateString()+'  <b>Last updated:</b> '+updated_on.toDateString(),
                   // Get rid of first link's name so close button disappears because issue is already closed
                 '<br><a href="#" class="closeIssue" id="'+ele._id+'"></a> <a href="#" class="deleteIssue" id="'+ele._id+'">Delete</a>',
                 '</div>'

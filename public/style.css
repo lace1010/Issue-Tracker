@@ -133,6 +133,7 @@ button:hover {
   margin-top: 20px;
   color: var(--second-color);
 }
+
 #exampleContainer {
   margin-top: 50px;
 }
@@ -160,6 +161,7 @@ code {
   display: block;
   margin: 10px 0px 10px 0px;
   font-size: 16px;
+  word-wrap: break-word;
 }
 
 #exampleLink {

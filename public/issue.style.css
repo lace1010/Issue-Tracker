@@ -54,6 +54,7 @@ button:hover {
   border-radius: 5px;
   font-size: 16px;
   text-decoration: none;
+  text-align: center;
 }
 
 #submitNewButton {
@@ -245,4 +246,17 @@ footer {
 
 #footerLink:hover {
   color: blue;
+}
+
+@media (max-width: 600px) {
+  #buttonsContainer {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+  #submitNewButton {
+    margin: 0.5rem 0 0.5rem 0;
+  }
 }

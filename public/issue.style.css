@@ -248,7 +248,7 @@ footer {
   color: blue;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 547px) {
   #buttonsContainer {
     display: flex;
     flex-direction: column;
